@@ -42,6 +42,10 @@
   height: 17vh;
   border-radius: 3%;
 }
+/* MAIN */
+.main {
+  display: flex;
+}
 /* Categories */
 .categories {
   background-color: #f3f5f5;
@@ -77,4 +81,11 @@
   height: 10vh;
   border-radius: 3%;
   margin: 1rem;
+}
+/* Basket */
+.ticket {
+  width: 30vw;
+}
+.basket:hover {
+  background-color: red;
 }
