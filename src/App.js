@@ -70,7 +70,9 @@ function App() {
                           setBasket(newBasket);
                           //---- Calcul du montant total----//
                           newBasket.map((item, key) => {
-                            setAmount(amount + item.price);
+                            // let type = typeof item.price;
+                            // console.log(Number(item.price));
+                            setAmount(amount + Number(item.price));
                           });
                         }}
                       >
