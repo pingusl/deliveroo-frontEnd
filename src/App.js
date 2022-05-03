@@ -6,8 +6,8 @@ function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState();
   const [basket, setBasket] = useState([]);
-  //  const [article, setArticle] = useState(0);
-  const [amount, setAmount] = useState(0);
+  const [subTotal, setSubTotal] = useState(0);
+  const [total, setTotal] = useState("Votre panier est vide");
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -72,8 +72,10 @@ function App() {
                           newBasket.map((item, key) => {
                             // let type = typeof item.price;
                             // console.log(Number(item.price));
-                            setAmount(amount + Number(item.price));
+                            setSubTotal(subTotal + Number(item.price));
                           });
+                          console.log(subTotal);
+                          setTotal(subTotal + 2.5);
                         }}
                       >
                         <section>
@@ -110,7 +112,7 @@ function App() {
               );
             })}
           </div>
-          <div className="total">{amount}</div>
+          <div className="total">{total}</div>
         </section>
       </div>
     </div>
