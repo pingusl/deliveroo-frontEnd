@@ -1,4 +1,6 @@
 import Header from "./components/header";
+import plus from "./img/deliveroo-plus-bt.png";
+import minus from "./img/deliveroo-minus-bt.png";
 import "./App.css";
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -66,16 +68,30 @@ function App() {
                         key={meal.id}
                         onClick={() => {
                           const newBasket = [...basket];
+                          //----Add categorieKey mealKey and quantity keys in basket----//
+                          //----Y a t il une valeur pour ces keys----//
+                          console.log(mealKey);
+                          //----Si la clef quantity n'existe pas, la creer avec une valeur 1
+                          //----Si la clef quantity existe, ajouter 1 a la valeur de quantity
+
+                          //----Set basket in setBasket----//
                           newBasket.push(meal);
+
+                          console.log(newBasket);
+
                           setBasket(newBasket);
-                          //---- Calcul du montant total----//
+                          let totalize = 0;
+                          //---- Calcul du sous-total----//
                           newBasket.map((item, key) => {
                             // let type = typeof item.price;
                             // console.log(Number(item.price));
-                            setSubTotal(subTotal + Number(item.price));
+                            totalize = totalize + Number(item.price);
+                            setSubTotal(totalize);
                           });
-                          console.log(subTotal);
-                          setTotal(subTotal + 2.5);
+                          //----Calcul du montant total----//
+                          //console.log(totalize);
+
+                          setTotal(totalize + 2.5); //Articles + delivery
                         }}
                       >
                         <section>
@@ -101,18 +117,39 @@ function App() {
         </section>
         <section className="basket">
           <button className="valid-bt">Valider mon panier</button>
-          <div className="ticket">
+          <div className="ticket-list">
             {basket.map((item, key) => {
               return (
                 <section className="basket-row" key={key}>
-                  <span>{item.id}</span>
-                  <span>{item.title}</span>
-                  <span>{item.price}€</span>
+                  <span className="counter">
+                    <img className="img-bt" src={plus} />
+                    <p> {item.quantity} </p>
+                    <img className="img-bt" src={minus} />
+                  </span>
+                  <span className="text">{item.title}</span>
+                  <span className="amount">{item.price} €</span>
                 </section>
               );
             })}
           </div>
-          <div className="total">{total}</div>
+          {total === "Votre panier est vide" ? (
+            <div></div>
+          ) : (
+            <div className="ticket-billing">
+              <div className="sub-total">
+                <span className="text">Sous-Total</span>
+                <span className="amount"> {subTotal} €</span>
+              </div>
+              <div className="delivery-charge">
+                <span className="text">Frais de livraison</span>
+                <span className="amount"> 2.50 €</span>
+              </div>
+              <div className="total">
+                <span className="text">Total</span>
+                <span className="amount"> {total} €</span>
+              </div>
+            </div>
+          )}
         </section>
       </div>
     </div>
