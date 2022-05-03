@@ -5,19 +5,14 @@ import axios from "axios";
 function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState();
+  const [basket, setBasket] = useState();
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get("http://localhost:3200/");
-        //  console.log(response.data);
+
         setData(response.data);
         setIsLoading(false);
-        //console.log(data);
-        // console.log(response.data.restaurant.name);
-        // console.log(data);
-        // data.restaurant.map((item, index) => {
-        //   return console.log(item);
-        // });
       } catch (error) {
         console.log(error.response);
       }
@@ -43,40 +38,52 @@ function App() {
           />
         </div>
       </section>
-      <section className="categories">
-        {data.categories.map((categorie, categorieKey) => {
-          console.log(categorie);
+      <div className="main">
+        <section className="categories">
+          {data.categories.map((categorie, categorieKey) => {
+            // console.log(categorie);
 
-          return (
-            <div>
-              <div className="categorie-name" key={categorieKey}>
-                {categorie.name}
-              </div>
-              <div
-                className="categorie-meals"
-                key={categorie.name + categorieKey}
-              >
-                {categorie.meals.map((meal, mealKey) => {
-                  // console.log(meal);
-                  return (
-                    <div className="categorie-meal" key={mealKey}>
-                      <section>
-                        <legend>{meal.title}</legend>
-                        <article>{meal.description}</article>
-                        <p>{meal.price}</p>
-                        {meal.popular}
-                      </section>
-                      <div>
-                        <img className="meal-picture" src={meal.picture} />
+            return (
+              <div key={categorieKey}>
+                <div className="categorie-name" key={categorieKey}>
+                  {categorie.name}
+                </div>
+                <div
+                  className="categorie-meals"
+                  key={categorie.name + categorieKey}
+                >
+                  {categorie.meals.map((meal, mealKey) => {
+                    // console.log(meal);
+                    return (
+                      <div
+                        className="categorie-meal"
+                        key={meal.id}
+                        onClick={(event) => {
+                          event.preventDefault();
+                          alert(`le menu a été cliqué!`);
+                        }}
+                      >
+                        <section>
+                          <legend>{meal.title}</legend>
+                          <article>{meal.description}</article>
+                          <p>{meal.price}</p>
+                          {meal.popular}
+                        </section>
+                        <div>
+                          <img className="meal-picture" src={meal.picture} />
+                        </div>
                       </div>
-                    </div>
-                  );
-                })}
+                    );
+                  })}
+                </div>
               </div>
-            </div>
-          );
-        })}
-      </section>
+            );
+          })}
+        </section>
+        <section className="panier">
+          <button className="valid-bt">Valider mon panier</button>
+        </section>
+      </div>
     </div>
   );
 }
