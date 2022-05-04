@@ -11,6 +11,24 @@ function App() {
   const [subTotal, setSubTotal] = useState(0);
   const [total, setTotal] = useState("Votre panier est vide");
   //const [quantity, setQuantity] = useState(1);
+
+  const calculTotal = () => {
+    let total = 0;
+    //---- Calcul du sous-total----//
+    basket.map((item, key) => {
+      // let type = typeof item.price;
+      // console.log(Number(item.price));
+      total += item.quantity * Number(item.price);
+      setSubTotal(total);
+    });
+    //----Calcul du montant total----//
+    //console.log(total);
+
+    setTotal(total + 2.5); //Articles + delivery
+
+    return total;
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -98,18 +116,7 @@ function App() {
                           // console.log(newBasket[mealKey]);
 
                           setBasket(newBasket);
-                          let totalize = 0;
-                          //---- Calcul du sous-total----//
-                          newBasket.map((item, key) => {
-                            // let type = typeof item.price;
-                            // console.log(Number(item.price));
-                            totalize = totalize + Number(item.price);
-                            setSubTotal(totalize);
-                          });
-                          //----Calcul du montant total----//
-                          //console.log(totalize);
-
-                          setTotal(totalize + 2.5); //Articles + delivery
+                          calculTotal();
                         }}
                       >
                         <section>
