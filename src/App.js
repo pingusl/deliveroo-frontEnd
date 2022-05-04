@@ -10,6 +10,7 @@ function App() {
   const [basket, setBasket] = useState([]);
   const [subTotal, setSubTotal] = useState(0);
   const [total, setTotal] = useState("Votre panier est vide");
+  //const [quantity, setQuantity] = useState(1);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -67,17 +68,34 @@ function App() {
                         className="categorie-meal"
                         key={meal.id}
                         onClick={() => {
+                          //----basket copy----//
                           const newBasket = [...basket];
-                          //----Add categorieKey mealKey and quantity keys in basket----//
-                          //----Y a t il une valeur pour ces keys----//
-                          console.log(mealKey);
-                          //----Si la clef quantity n'existe pas, la creer avec une valeur 1
-                          //----Si la clef quantity existe, ajouter 1 a la valeur de quantity
+                          //----Trouve l'objet dans lequel est contenu le id avec la methode find()----//
+                          const isItemAlreadyInBasket = basket.find(
+                            (item) => item.id === meal.id
+                          );
 
-                          //----Set basket in setBasket----//
-                          newBasket.push(meal);
+                          //----Y a t il un enregistrement dans le basket avec id du menu cliquer----//
+                          console.log(isItemAlreadyInBasket);
 
-                          console.log(newBasket);
+                          if (isItemAlreadyInBasket === undefined) {
+                            //----Si l'id du menu n'existe pas dans le ticket, Ajouter le meal au Basket
+                            newBasket.push({
+                              id: meal.id,
+                              price: Number(meal.price),
+                              title: meal.title,
+                              quantity: 1,
+                            });
+                          } //----Si la clef quantity existe, ajouter 1 a la valeur de quantity
+                          else isItemAlreadyInBasket.quantity++;
+
+                          // meal.quantity
+                          //   ? //----Si la clef quantity existe, ajouter 1 a la valeur de quantity
+                          //     console.log((meal.quantity = meal.quantity + 1))
+                          //   : //----Si la clef quantity n'existe pas, la creer avec une valeur 1
+                          //     (meal.quantity = 1);
+
+                          // console.log(newBasket[mealKey]);
 
                           setBasket(newBasket);
                           let totalize = 0;
