@@ -9,7 +9,7 @@ function App() {
   const [data, setData] = useState();
   const [basket, setBasket] = useState([]);
   const [subTotal, setSubTotal] = useState(0);
-  const [total, setTotal] = useState("Votre panier est vide");
+  const [total, setTotal] = useState("");
   //const [quantity, setQuantity] = useState(1);
 
   const calculTotal = () => {
@@ -22,7 +22,7 @@ function App() {
       setSubTotal(total);
     });
     //----Calcul du montant total----//
-    //console.log(total);
+    console.log(total);
 
     setTotal(total + 2.5); //Articles + delivery
 
@@ -94,7 +94,7 @@ function App() {
                           );
 
                           //----Y a t il un enregistrement dans le basket avec id du menu cliquer----//
-                          console.log(isItemAlreadyInBasket);
+                          //console.log(isItemAlreadyInBasket);
 
                           if (isItemAlreadyInBasket === undefined) {
                             //----Si l'id du menu n'existe pas dans le ticket, Ajouter le meal au Basket
@@ -104,7 +104,8 @@ function App() {
                               title: meal.title,
                               quantity: 1,
                             });
-                          } //----Si la clef quantity existe, ajouter 1 a la valeur de quantity
+                            calculTotal();
+                          } //----Si l'id du menu n'existe pas, ajouter 1 a la valeur de quantity
                           else isItemAlreadyInBasket.quantity++;
 
                           // meal.quantity
@@ -147,9 +148,43 @@ function App() {
               return (
                 <section className="basket-row" key={key}>
                   <span className="counter">
-                    <img className="img-bt" src={plus} />
+                    <img
+                      className="img-bt"
+                      src={plus}
+                      onClick={() => {
+                        //Ici je viens incrémenter ma quantité
+
+                        const newBasket = [...basket];
+                        newBasket[key].quantity++;
+                        setBasket(newBasket);
+                        //mise a jour des totaux
+                        calculTotal();
+                      }}
+                    />
                     <p> {item.quantity} </p>
-                    <img className="img-bt" src={minus} />
+                    <img
+                      className="img-bt"
+                      src={minus}
+                      onClick={() => {
+                        //Si il y a une quantité de 1 et que je m'apprête à supprimer l'élément du panier
+
+                        if (item.quantity === 1) {
+                          const newBasket = [...basket];
+                          //Je connais l'élément à supprimer par l'index Key de map
+
+                          //Suppression de l'élément avec la méthode splice
+                          newBasket.splice(key, 1);
+                          //Mémorisation du tableau mis a jour de panier
+                          setBasket(newBasket);
+                        } else {
+                          const newBasket = [...basket];
+                          newBasket[key].quantity--;
+                          setBasket(newBasket);
+                        }
+                        //mise a jour des totaux
+                        calculTotal();
+                      }}
+                    />
                   </span>
                   <span className="text">{item.title}</span>
                   <span className="amount">{item.price} €</span>
@@ -157,8 +192,9 @@ function App() {
               );
             })}
           </div>
-          {total === "Votre panier est vide" ? (
-            <div></div>
+
+          {total === "" ? (
+            <div>Votre panier est vide</div>
           ) : (
             <div className="ticket-billing">
               <div className="sub-total">
