@@ -14,6 +14,8 @@ function App() {
 
   const calculTotal = () => {
     let total = 0;
+    let subTotal = 0;
+    let totals = [];
     //---- Calcul du sous-total----//
     basket.map((item, key) => {
       // let type = typeof item.price;
@@ -160,6 +162,7 @@ function App() {
                         //mise a jour des totaux
                         calculTotal();
                       }}
+                      alt="plus"
                     />
                     <p> {item.quantity} </p>
                     <img
@@ -184,6 +187,7 @@ function App() {
                         //mise a jour des totaux
                         calculTotal();
                       }}
+                      alt="minus"
                     />
                   </span>
                   <span className="text">{item.title}</span>
